@@ -3,7 +3,20 @@
 
 #include "framework.h"
 #include "NKT.h"
-#include "WindowHandler.h"
+//#include "WindowHandler.h"
+
+#include <QtWidgets/qpushbutton.h>
+#include <QtCore/qobject.h>
+#include <QtCore/qcoreapplication.h>
+#include <QtWidgets/qapplication.h>
+#include <QtWidgets/qframe.h>
+#include <QtWidgets/qlistwidget.h>
+#include <QtWidgets/qtablewidget.h>
+#include <QtWidgets/qheaderview.h>
+#include <QtWidgets/qlabel.h>
+#include <QtCore/qstringlist.h>
+#include <QtCore/qstring.h>
+#include <QtCore/qcontainerfwd.h>
 
 //#define MAX_LOADSTRING 100
 //enum menuTasks { Info = 1, Inventory = 2, AddItem = 3, Projects = 4, Help = 5};
@@ -40,52 +53,140 @@
 //
 //}
 
+//QCoreApplication* createApplication(int& argc, char* argv[])
+//{
+//	for (int i = 1; i < argc; i++)
+//	{
+//		if (!qstrcmp(argv[i], "-no-gui"))
+//			return new QCoreApplication(argc, argv);
+//	}
+//
+//	return new QApplication(argc, argv);
+//}
 
+int main(int argc, char* argv[])
+{
+	QApplication app(argc, argv);
 
-HINSTANCE hInst; // current instance
-//WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
-//WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
-HMENU menuHandle;
+	QString text("Hello there");
+
+	QWidget mainWindow;
+
+	mainWindow.resize(960, 540);
+	mainWindow.setWindowTitle("NKT inventory");
+	mainWindow.setObjectName("NKT");
+	app.setActiveWindow(&mainWindow);
+
+	QFrame topFrame(&mainWindow);
+	topFrame.setFrameShape(QFrame::Shape::Panel);
+	topFrame.setFrameShadow(QFrame::Shadow::Raised);
+	topFrame.setLineWidth(3);
+	topFrame.setGeometry(0, 0, 960, 30);
+
+	QPushButton inventoryButton(static_cast<QWidget*>(&topFrame));
+	inventoryButton.setText("Inventory");
+	inventoryButton.setGeometry(10, 5, 160, 20);
+
+	QPushButton projectsButton(static_cast<QWidget*>(&topFrame));
+	projectsButton.setText("Projects");
+	projectsButton.setGeometry(180, 5, 160, 20);
+
+	QPushButton graphicsButton(static_cast<QWidget*>(&topFrame));
+	graphicsButton.setText("Graphical view");
+	graphicsButton.setGeometry(350, 5, 160, 20);
+
+	QTableWidget itemList(&mainWindow);
+	itemList.setGeometry(10, 50, 780, 460);
+	itemList.setFrameShape(QFrame::Shape::Panel);
+	itemList.setFrameShadow(QFrame::Shadow::Sunken);
+	itemList.setLineWidth(5);
+	itemList.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+	itemList.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+	itemList.setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
+	itemList.setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
+	itemList.setRowCount(10);
+	itemList.setColumnCount(5);
+
+	// ERROR HÄR...
+	// UNRESOLVED EXTERNALS
+	QStringList labels = { "Name", "Location", "Amount", "Serial number" };
+	//labels.append("Name");
+	
+	//labels.append("Location");
+	//labels.append("Amount");
+	//labels.append("Serial number");
+
+	itemList.setHorizontalHeaderLabels(labels);
+
+	//QHeaderView defaultView(Qt::Orientation::Horizontal, &itemList);
+	//
+	//itemList.setHorizontalHeader(&defaultView);
+
+	QTableWidgetItem temp("Bottenplatta");
+	itemList.setItem(0, 0, &temp);
+	
+
+	//itemList.addItem("First item");
+	//itemList.addItem("Second item");
+
+	mainWindow.show();
+
+	return app.exec();
+}
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+	_In_opt_ HINSTANCE hPrevInstance,
+	_In_ LPWSTR    lpCmdLine,
+	_In_ int       nCmdShow)
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
-    UNREFERENCED_PARAMETER(lpCmdLine);
-
-    HWND windowHandle;
-    
-    // TODO: Place code here.
-
-    // Initialize global strings
-    LoadStringW(hInstance, IDS_APP_TITLE, WindowHandler::szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_NKT, WindowHandler::szWindowClass, MAX_LOADSTRING);
-    WindowHandler::MyRegisterClass(hInstance);
-
-    // Perform application initialization:
-    if (!WindowHandler::InitInstance (hInstance, nCmdShow))
-    {
-        return FALSE;
-    }
-
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_NKT));
-
-    MSG msg;
-
-    // Main message loop:
-    while (GetMessage(&msg, nullptr, 0, 0))
-    {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-    }
-
-    return (int) msg.wParam;
+	char* argv['0'];
+	main(0, argv);
 }
+
+//HINSTANCE hInst; // current instance
+////WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
+////WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
+//HMENU menuHandle;
+//
+//int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
+//                     _In_opt_ HINSTANCE hPrevInstance,
+//                     _In_ LPWSTR    lpCmdLine,
+//                     _In_ int       nCmdShow)
+//{
+//    UNREFERENCED_PARAMETER(hPrevInstance);
+//    UNREFERENCED_PARAMETER(lpCmdLine);
+//
+//    HWND windowHandle;
+//    
+//    // TODO: Place code here.
+//
+//    // Initialize global strings
+//    LoadStringW(hInstance, IDS_APP_TITLE, WindowHandler::szTitle, MAX_LOADSTRING);
+//    LoadStringW(hInstance, IDC_NKT, WindowHandler::szWindowClass, MAX_LOADSTRING);
+//    WindowHandler::MyRegisterClass(hInstance);
+//
+//    // Perform application initialization:
+//    if (!WindowHandler::InitInstance (hInstance, nCmdShow))
+//    {
+//        return FALSE;
+//    }
+//
+//    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_NKT));
+//
+//    MSG msg;
+//
+//    // Main message loop:
+//    while (GetMessage(&msg, nullptr, 0, 0))
+//    {
+//        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+//        {
+//            TranslateMessage(&msg);
+//            DispatchMessage(&msg);
+//        }
+//    }
+//
+//    return (int) msg.wParam;
+//}
 
 
 

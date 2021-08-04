@@ -1,0 +1,2 @@
+﻿NKT.obj : error LNK2019: unresolved external symbol _CrtDbgReport referenced in function "void __cdecl std::_Verify_range<class QString>(class QString const * const,class QString const * const)" (??$_Verify_range@VQString@@@std@@YAXQEBVQString@@0@Z)
+E:\C++ projekt\Github\Stock-management-DEMO\NKT\NKT\x64\Debug\NKT.exe : fatal error LNK1120: 1 unresolved externals
